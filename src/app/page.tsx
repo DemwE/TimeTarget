@@ -1,101 +1,94 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { calculateTimeRemaining } from '@/lib/counter';
 import Image from "next/image";
+import calendarIcon from "@/app/calendar.svg";
+import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [targetDate, setTargetDate] = useState<string>('');
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  useEffect(() => {
+    const savedDate = localStorage.getItem('targetDate');
+    if (savedDate) {
+      setTargetDate(savedDate);
+    }
+  }, []);
+
+  const [timeRemaining, setTimeRemaining] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  useEffect(() => {
+    if (!targetDate) return;
+
+    localStorage.setItem('targetDate', targetDate);
+
+    const updateTimer = () => {
+      const currentDate = new Date().getTime();
+      const target = new Date(targetDate).getTime();
+      const timeDiff = target - currentDate;
+
+      if (timeDiff <= 0) {
+        setTimeRemaining({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+      } else {
+        setTimeRemaining(calculateTimeRemaining(timeDiff));
+      }
+    };
+
+    updateTimer();
+
+    const countdownInterval = setInterval(updateTimer, 1000);
+
+    return () => clearInterval(countdownInterval);
+  }, [targetDate]);
+
+  const handleDateTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTargetDate(event.target.value);
+  };
+
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[#ebedfa]">
+      <div className="fixed bottom-5 left-5">
+        <Popover>
+          <PopoverTrigger asChild>
+            <button className="rounded-full bg-black p-3 hover:bg-gray-900 transition-colors select-none">
+              <Image src={calendarIcon} alt="calendar"/>
+            </button>
+          </PopoverTrigger>
+          <PopoverContent side="right" className="ml-2">
+            <input
+              type="datetime-local"
+              value={targetDate}
+              onChange={handleDateTimeChange}
+              className="p-2 border border-black rounded"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          </PopoverContent>
+        </Popover>
+      </div>
+
+      <div id="countdownDisplay" className="grid grid-cols-4 gap-8 text-center font-sora select-none">
+        <div className="min-w-24">
+          <p className="text-6xl font-bold ">{timeRemaining.days}</p>
+          <p>Days</p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <div className="min-w-24">
+          <p className="text-6xl font-bold">{timeRemaining.hours}</p>
+          <p>Hours</p>
+        </div>
+        <div className="min-w-24">
+          <p className="text-6xl font-bold">{timeRemaining.minutes}</p>
+          <p>Minutes</p>
+        </div>
+        <div className="min-w-24">
+          <p className="text-6xl font-bold">{timeRemaining.seconds}</p>
+          <p>Seconds</p>
+        </div>
+      </div>
     </div>
   );
 }
