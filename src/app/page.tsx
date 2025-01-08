@@ -3,8 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import { calculateTimeRemaining } from '@/lib/counter';
 import Image from "next/image";
-import calendarIcon from "@/app/calendar.svg";
 import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover';
+import calendarIcon from "@/app/calendar.svg";
+import githubIcon from "@/app/github.svg";
 
 export default function Home() {
   const [targetDate, setTargetDate] = useState<string>('');
@@ -53,22 +54,27 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#ebedfa]">
-      <div className="fixed bottom-5 left-5">
-        <Popover>
-          <PopoverTrigger asChild>
-            <button className="rounded-full bg-black p-3 hover:bg-gray-900 transition-colors select-none">
+      <div className="fixed bottom-5 left-5 flex flex-col space-y-2">
+        <a className="rounded-full bg-black p-3 hover:bg-gray-900 transition-colors select-none" target="_blank" href="https://github.com/DemwE/TimeTarget">
+          <Image src={githubIcon} alt="github"/>
+        </a>
+        <div>
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="rounded-full bg-black p-3 hover:bg-gray-900 transition-colors select-none">
               <Image src={calendarIcon} alt="calendar"/>
-            </button>
-          </PopoverTrigger>
-          <PopoverContent side="right" className="ml-2">
-            <input
-              type="datetime-local"
-              value={targetDate}
-              onChange={handleDateTimeChange}
-              className="p-2 border border-black rounded"
-            />
-          </PopoverContent>
-        </Popover>
+              </button>
+            </PopoverTrigger>
+            <PopoverContent side="right" className="ml-2">
+              <input
+                type="datetime-local"
+                value={targetDate}
+                onChange={handleDateTimeChange}
+                className="p-2 border border-black rounded"
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
       </div>
 
       <div id="countdownDisplay" className="grid grid-cols-4 gap-8 text-center font-sora select-none">
