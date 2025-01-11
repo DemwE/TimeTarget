@@ -1,12 +1,12 @@
 import React from 'react';
 import Image from "next/image";
 import {Popover, PopoverContent, PopoverTrigger} from '@radix-ui/react-popover';
-import calendarIcon from "@/app/calendar.svg";
-import githubIcon from "@/app/github.svg";
-import notificationOnIcon from "@/app/notifications_active.svg";
-import notificationOffIcon from "@/app/notifications_off.svg";
-import lightModeIcon from "@/app/light_mode.svg";
-import darkModeIcon from "@/app/dark_mode.svg";
+import calendarIcon from "@/images/calendar.svg";
+import githubIcon from "@/images/github.svg";
+import notificationOnIcon from "@/images/notifications_active.svg";
+import notificationOffIcon from "@/images/notifications_off.svg";
+import lightModeIcon from "@/images/light_mode.svg";
+import darkModeIcon from "@/images/dark_mode.svg";
 
 interface ControlPanelProps {
   targetDate: string;
