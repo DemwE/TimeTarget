@@ -10,13 +10,25 @@ export default function Home() {
   const [notificationPermission, setNotificationPermission] = useState<string | null>(null);
   const [notificationSent, setNotificationSent] = useState<boolean>(false);
   const [themeMode, setThemeMode] = useState<'light' | 'dark'>('light');
+  const [currentColors, setCurrentColors] = useState({ background: '#ebedfa', text: '#000000', button: '#008080' });
 
   useEffect(() => {
     initializeTargetDate(setTargetDate, setThemeMode);
+    const savedTheme = localStorage.getItem('themeMode');
+    const savedColors = savedTheme === 'light' ? localStorage.getItem('lightModeColors') : localStorage.getItem('darkModeColors');
+    if (savedColors) {
+      const parsedColors = JSON.parse(savedColors);
+      setCurrentColors({ ...parsedColors, button: parsedColors.button || '#008080' });
+    }
   }, []);
 
   useEffect(() => {
     updateThemeMode(themeMode);
+    const savedColors = themeMode === 'light' ? localStorage.getItem('lightModeColors') : localStorage.getItem('darkModeColors');
+    if (savedColors) {
+      const parsedColors = JSON.parse(savedColors);
+      setCurrentColors({ ...parsedColors, button: parsedColors.button || '#008080' });
+    }
   }, [themeMode]);
 
   const [timeRemaining, setTimeRemaining] = useState({
@@ -76,7 +88,7 @@ export default function Home() {
   };
 
   return (
-    <main className={`flex flex-col items-center justify-center min-h-screen transition-colors ${themeMode === 'light' ? 'bg-[#ebedfa]' : 'bg-[#050714]'}`}>
+    <main style={{ backgroundColor: currentColors.background, color: currentColors.text }} className="flex flex-col items-center justify-center min-h-screen transition-colors">
       <ControlPanel
         targetDate={targetDate}
         themeMode={themeMode}
@@ -85,7 +97,7 @@ export default function Home() {
         toggleTheme={toggleTheme}
         handleNotificationToggle={handleNotificationToggle}
       />
-      <CountdownDisplay timeRemaining={timeRemaining} />
+      <CountdownDisplay timeRemaining={timeRemaining} colors={currentColors} />
     </main>
   );
 }
