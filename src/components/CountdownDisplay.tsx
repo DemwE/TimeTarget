@@ -9,7 +9,7 @@ interface TimeRemaining {
 
 interface CountdownDisplayProps {
   timeRemaining: TimeRemaining;
-  colors: { background: string; text: string; button: string };
+  colors: { background: string; text: string;};
 }
 
 const CountdownDisplay: React.FC<CountdownDisplayProps> = ({ timeRemaining, colors }) => {
