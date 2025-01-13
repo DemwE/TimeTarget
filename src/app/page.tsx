@@ -1,41 +1,20 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { initializeTargetDate, updateThemeMode, startCountdown } from '@/lib/timer';
+import { initializeTargetDate, startCountdown } from '@/lib/timer';
 import CountdownDisplay from '@/components/CountdownDisplay';
 import ControlPanel from '@/components/ControlPanel';
+import { useTheme } from '@/components/ThemeProvider';
 
 export default function Home() {
+  const { themeMode, toggleTheme, currentColors } = useTheme();
   const [targetDate, setTargetDate] = useState<string>('');
   const [notificationPermission, setNotificationPermission] = useState<string | null>(null);
   const [notificationSent, setNotificationSent] = useState<boolean>(false);
-  const [themeMode, setThemeMode] = useState<'light' | 'dark'>('light');
-  const [currentColors, setCurrentColors] = useState({ background: '#ebedfa', text: '#000000', button: '#008080' });
 
   useEffect(() => {
-    initializeTargetDate(setTargetDate, setThemeMode);
-    const savedTheme = localStorage.getItem('themeMode');
-    const savedColors = savedTheme === 'dark' ? localStorage.getItem('darkModeColors') : localStorage.getItem('lightModeColors');
-    if (savedColors) {
-      const parsedColors = JSON.parse(savedColors);
-      setCurrentColors({ ...parsedColors, button: parsedColors.button || '#008080' });
-    } else if (savedTheme === 'dark') {
-      setCurrentColors({ background: '#111827', text: '#ffffff', button: '#008080' });
-    }
+    initializeTargetDate(setTargetDate, () => {});
   }, []);
-
-  useEffect(() => {
-    updateThemeMode(themeMode);
-    const savedColors = themeMode === 'dark' ? localStorage.getItem('darkModeColors') : localStorage.getItem('lightModeColors');
-    if (savedColors) {
-      const parsedColors = JSON.parse(savedColors);
-      setCurrentColors({ ...parsedColors, button: parsedColors.button || '#008080' });
-    } else if (themeMode === 'dark') {
-      setCurrentColors({ background: '#111827', text: '#ffffff', button: '#008080' });
-    } else {
-      setCurrentColors({ background: '#ebedfa', text: '#000000', button: '#008080' });
-    }
-  }, [themeMode]);
 
   const [timeRemaining, setTimeRemaining] = useState({
     days: 0,
@@ -89,12 +68,8 @@ export default function Home() {
     }
   };
 
-  const toggleTheme = () => {
-    setThemeMode((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
-  };
-
   return (
-    <main style={{ backgroundColor: currentColors.background, color: currentColors.text }} className="flex flex-col items-center justify-center min-h-screen transition-colors">
+    <main className="flex flex-col items-center justify-center min-h-screen transition-colors">
       <ControlPanel
         targetDate={targetDate}
         themeMode={themeMode}

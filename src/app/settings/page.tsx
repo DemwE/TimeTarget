@@ -1,21 +1,17 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { updateThemeMode } from "@/lib/timer";
-import { Switch } from "@/components/ui/switch"
+import { Switch } from "@/components/ui/switch";
+import { useTheme } from "@/components/ThemeProvider";
 
 export default function Settings() {
-  const [themeMode, setThemeMode] = useState<'light' | 'dark'>('light');
+  const { themeMode, toggleTheme, currentColors } = useTheme();
   const [lightModeColors, setLightModeColors] = useState({ background: '#ebedfa', text: '#000000' });
   const [darkModeColors, setDarkModeColors] = useState({ background: '#111827', text: '#ffffff' });
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('themeMode');
     const savedLightColors = localStorage.getItem('lightModeColors');
     const savedDarkColors = localStorage.getItem('darkModeColors');
-    if (savedTheme) {
-      setThemeMode(savedTheme as 'light' | 'dark');
-    }
     if (savedLightColors) {
       setLightModeColors(JSON.parse(savedLightColors));
     }
@@ -25,21 +21,12 @@ export default function Settings() {
   }, []);
 
   useEffect(() => {
-    updateThemeMode(themeMode);
-    localStorage.setItem('themeMode', themeMode);
-  }, [themeMode]);
-
-  useEffect(() => {
     localStorage.setItem('lightModeColors', JSON.stringify(lightModeColors));
   }, [lightModeColors]);
 
   useEffect(() => {
     localStorage.setItem('darkModeColors', JSON.stringify(darkModeColors));
   }, [darkModeColors]);
-
-  const toggleTheme = () => {
-    setThemeMode((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
-  };
 
   const handleColorChange = (mode: 'light' | 'dark', type: 'background' | 'text', color: string) => {
     if (mode === 'light') {
@@ -56,8 +43,6 @@ export default function Settings() {
       setDarkModeColors({ background: '#111827', text: '#ffffff' });
     }
   };
-
-  const currentColors = themeMode === 'light' ? lightModeColors : darkModeColors;
 
   return (
     <main style={{ backgroundColor: currentColors.background, color: currentColors.text }} className="min-h-dvh py-8 px-20">

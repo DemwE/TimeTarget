@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./main.css";
+import {ThemeProvider} from "@/components/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "Time Target",
@@ -16,7 +17,9 @@ export default function RootLayout({
       <body
         className={``}
       >
+      <ThemeProvider>
         {children}
+      </ThemeProvider>
       </body>
     </html>
   );
