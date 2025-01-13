@@ -1,19 +1,21 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { initializeTargetDate, startCountdown } from '@/lib/timer';
+import React, {useState, useEffect} from 'react';
+import {initializeTargetDate, startCountdown} from '@/lib/timer';
 import CountdownDisplay from '@/components/CountdownDisplay';
 import ControlPanel from '@/components/ControlPanel';
-import { useTheme } from '@/components/ThemeProvider';
+import {useTheme} from '@/components/ThemeProvider';
+import {toggleNotificationPermission} from "@/lib/notifications";
 
 export default function Home() {
-  const { themeMode, toggleTheme, currentColors } = useTheme();
+  const {themeMode, toggleTheme, currentColors} = useTheme();
   const [targetDate, setTargetDate] = useState<string>('');
   const [notificationPermission, setNotificationPermission] = useState<string | null>(null);
   const [notificationSent, setNotificationSent] = useState<boolean>(false);
 
   useEffect(() => {
-    initializeTargetDate(setTargetDate, () => {});
+    initializeTargetDate(setTargetDate, () => {
+    });
   }, []);
 
   const [timeRemaining, setTimeRemaining] = useState({
@@ -50,22 +52,7 @@ export default function Home() {
   };
 
   const handleNotificationToggle = () => {
-    if (!('Notification' in window)) {
-      console.error('This browser does not support notifications.');
-      return;
-    }
-
-    if (notificationPermission === 'granted') {
-      setNotificationPermission('default');
-    } else {
-      Notification.requestPermission().then((permission) => {
-        if (permission === 'granted') {
-          setNotificationPermission(permission);
-        } else {
-          setNotificationPermission('default');
-        }
-      });
-    }
+    toggleNotificationPermission(notificationPermission, setNotificationPermission);
   };
 
   return (
@@ -78,7 +65,7 @@ export default function Home() {
         toggleTheme={toggleTheme}
         handleNotificationToggle={handleNotificationToggle}
       />
-      <CountdownDisplay timeRemaining={timeRemaining} colors={currentColors} />
+      <CountdownDisplay timeRemaining={timeRemaining} colors={currentColors}/>
     </main>
   );
 }
