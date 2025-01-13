@@ -7,7 +7,7 @@ import { Switch } from "@/components/ui/switch"
 export default function Settings() {
   const [themeMode, setThemeMode] = useState<'light' | 'dark'>('light');
   const [lightModeColors, setLightModeColors] = useState({ background: '#ebedfa', text: '#000000' });
-  const [darkModeColors, setDarkModeColors] = useState({ background: '#050714', text: '#ffffff' });
+  const [darkModeColors, setDarkModeColors] = useState({ background: '#111827', text: '#ffffff' });
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('themeMode');
@@ -53,7 +53,7 @@ export default function Settings() {
     if (mode === 'light') {
       setLightModeColors({ background: '#ebedfa', text: '#000000' });
     } else {
-      setDarkModeColors({ background: '#050714', text: '#ffffff' });
+      setDarkModeColors({ background: '#111827', text: '#ffffff' });
     }
   };
 

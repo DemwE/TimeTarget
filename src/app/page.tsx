@@ -15,19 +15,25 @@ export default function Home() {
   useEffect(() => {
     initializeTargetDate(setTargetDate, setThemeMode);
     const savedTheme = localStorage.getItem('themeMode');
-    const savedColors = savedTheme === 'light' ? localStorage.getItem('lightModeColors') : localStorage.getItem('darkModeColors');
+    const savedColors = savedTheme === 'dark' ? localStorage.getItem('darkModeColors') : localStorage.getItem('lightModeColors');
     if (savedColors) {
       const parsedColors = JSON.parse(savedColors);
       setCurrentColors({ ...parsedColors, button: parsedColors.button || '#008080' });
+    } else if (savedTheme === 'dark') {
+      setCurrentColors({ background: '#111827', text: '#ffffff', button: '#008080' });
     }
   }, []);
 
   useEffect(() => {
     updateThemeMode(themeMode);
-    const savedColors = themeMode === 'light' ? localStorage.getItem('lightModeColors') : localStorage.getItem('darkModeColors');
+    const savedColors = themeMode === 'dark' ? localStorage.getItem('darkModeColors') : localStorage.getItem('lightModeColors');
     if (savedColors) {
       const parsedColors = JSON.parse(savedColors);
       setCurrentColors({ ...parsedColors, button: parsedColors.button || '#008080' });
+    } else if (themeMode === 'dark') {
+      setCurrentColors({ background: '#111827', text: '#ffffff', button: '#008080' });
+    } else {
+      setCurrentColors({ background: '#ebedfa', text: '#000000', button: '#008080' });
     }
   }, [themeMode]);
 
