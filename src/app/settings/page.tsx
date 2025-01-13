@@ -78,34 +78,34 @@ export default function Settings() {
           <div className="flex flex-col space-y-2">
             <div className="space-y-1">
               <h4 className="text-xl">Light Mode colors</h4>
-              <div className="flex">
+              <div className="flex space-x-1">
                 <input className="bg-transparent" type="color" value={lightModeColors.background}
                        onChange={(e) => handleColorChange('light', 'background', e.target.value)}/>
                 <span>Background</span>
               </div>
-              <div className="flex">
+              <div className="flex space-x-1">
                 <input className="bg-transparent" type="color" value={lightModeColors.text}
                        onChange={(e) => handleColorChange('light', 'text', e.target.value)}/>
                 <span>Text</span>
               </div>
-              <button className="rounded-md bg-black p-1 hover:bg-gray-900 text-white transition-colors select-none"
+              <button className="rounded-full bg-black p-2 px-4 hover:bg-gray-900 dark:hover:bg-gray-950 text-white transition-colors select-none"
                       onClick={() => resetColors('light')}>
                 Reset
               </button>
             </div>
             <div className="space-y-1">
               <h4 className="text-xl">Dark Mode colors</h4>
-              <div className="flex">
+              <div className="flex space-x-1">
                 <input className="bg-transparent" type="color" value={darkModeColors.background}
                        onChange={(e) => handleColorChange('dark', 'background', e.target.value)}/>
                 <span>Background</span>
               </div>
-              <div className="flex">
+              <div className="flex space-x-1">
                 <input className="bg-transparent" type="color" value={darkModeColors.text}
                        onChange={(e) => handleColorChange('dark', 'text', e.target.value)}/>
                 <span>Text</span>
               </div>
-              <button className="rounded-md bg-black p-1 hover:bg-gray-900 text-white transition-colors select-none"
+              <button className="rounded-full bg-black p-2 px-4 hover:bg-gray-900 dark:hover:bg-gray-950 text-white transition-colors select-none"
                       onClick={() => resetColors('dark')}>
                 Reset
               </button>
@@ -115,13 +115,13 @@ export default function Settings() {
         <div className="space-y-4 inline-grid">
           <h2 className="text-4xl">Notifications</h2>
           <button onClick={resetNotificationPrivileges}
-                  className="rounded-md bg-black p-1 hover:bg-gray-900 text-white transition-colors select-none">Reset
+                  className="rounded-full bg-black p-3 hover:bg-gray-900 dark:hover:bg-gray-950 text-white transition-colors select-none">Reset
             privileges
           </button>
         </div>
       </div>
-      <div className="mt-8 space-y-2">
-        <a href="/" className="rounded-md bg-black p-3 px -5 hover:bg-gray-900 text-white transition-colors select-none">Back to Timer</a>
+      <div className="mt-8 space-y-5">
+        <a href="/" className="rounded-full bg-black p-3 hover:bg-gray-900 dark:hover:bg-gray-950 text-white transition-colors select-none">Back to Timer</a>
         <p>More Setting soon</p>
       </div>
     </main>
