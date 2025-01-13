@@ -5,7 +5,7 @@ import { useTheme } from "@/components/ThemeProvider";
 import Switch from "@/components/Switch";
 
 export default function Settings() {
-  const { themeMode, toggleTheme, currentColors } = useTheme();
+  const { themeMode, toggleTheme} = useTheme();
   const [lightModeColors, setLightModeColors] = useState({ background: '#ebedfa', text: '#000000' });
   const [darkModeColors, setDarkModeColors] = useState({ background: '#111827', text: '#ffffff' });
 
@@ -45,7 +45,7 @@ export default function Settings() {
   };
 
   return (
-    <main style={{ backgroundColor: currentColors.background, color: currentColors.text }} className="min-h-dvh py-8 px-20">
+    <main className="min-h-dvh py-8 px-20">
       <h1 className="text-6xl">Settings - Alpha</h1>
       <div className="mt-2">
         <div className="space-y-2">
