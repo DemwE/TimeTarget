@@ -7,6 +7,7 @@ interface ThemeContextProps {
   themeMode: 'light' | 'dark';
   toggleTheme: () => void;
   currentColors: { background: string; text: string; };
+  setCurrentColors: (colors: { background: string; text: string; }) => void;
 }
 
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
@@ -43,11 +44,11 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   }, [themeMode]);
 
   const toggleTheme = () => {
-    setThemeMode((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+    setThemeMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
   };
 
   return (
-    <ThemeContext.Provider value={{ themeMode, toggleTheme, currentColors }}>
+    <ThemeContext.Provider value={{ themeMode, toggleTheme, currentColors, setCurrentColors }}>
       <div style={{ backgroundColor: currentColors.background, color: currentColors.text }} className="min-h-dvh transition-colors">
         {children}
       </div>

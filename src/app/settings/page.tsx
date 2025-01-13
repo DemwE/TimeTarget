@@ -9,6 +9,7 @@ export default function Settings() {
   const [lightModeColors, setLightModeColors] = useState({background: '#ebedfa', text: '#000000'});
   const [darkModeColors, setDarkModeColors] = useState({background: '#111827', text: '#ffffff'});
   const [notificationPermission, setNotificationPermission] = useState<string | null>(null);
+  const [currentColors, setCurrentColors] = useState({background: '#ebedfa', text: '#000000'});
 
   useEffect(() => {
     const savedLightColors = localStorage.getItem('lightModeColors');
@@ -29,6 +30,10 @@ export default function Settings() {
     localStorage.setItem('darkModeColors', JSON.stringify(darkModeColors));
   }, [darkModeColors]);
 
+  useEffect(() => {
+    setCurrentColors(themeMode === 'dark' ? darkModeColors : lightModeColors);
+  }, [themeMode, lightModeColors, darkModeColors]);
+
   const handleColorChange = (mode: 'light' | 'dark', type: 'background' | 'text', color: string) => {
     if (mode === 'light') {
       setLightModeColors((prevColors) => ({...prevColors, [type]: color}));
@@ -39,9 +44,17 @@ export default function Settings() {
 
   const resetColors = (mode: 'light' | 'dark') => {
     if (mode === 'light') {
-      setLightModeColors({background: '#ebedfa', text: '#000000'});
+      const defaultLightColors = {background: '#ebedfa', text: '#000000'};
+      setLightModeColors(defaultLightColors);
+      if (themeMode === 'light') {
+        setCurrentColors(defaultLightColors);
+      }
     } else {
-      setDarkModeColors({background: '#111827', text: '#ffffff'});
+      const defaultDarkColors = {background: '#111827', text: '#ffffff'};
+      setDarkModeColors(defaultDarkColors);
+      if (themeMode === 'dark') {
+        setCurrentColors(defaultDarkColors);
+      }
     }
   };
 
@@ -52,7 +65,7 @@ export default function Settings() {
   }
 
   return (
-    <main className="min-h-dvh py-8 px-20">
+    <main className="min-h-dvh py-8 px-20" style={{ backgroundColor: currentColors.background, color: currentColors.text }}>
       <h1 className="text-6xl">Settings</h1>
       <div className="mt-8 space-y-6">
         <div className="space-y-4">
