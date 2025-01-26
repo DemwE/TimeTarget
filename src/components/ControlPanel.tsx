@@ -100,7 +100,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
             type="datetime-local"
             value={targetDate}
             onChange={handleDateTimeChange}
-            className="p-2 border border-black rounded dark:bg-gray-700"
+            className="p-2 border border-black rounded-sm dark:bg-gray-700 outline-0"
           />
         </div>
       </div>
